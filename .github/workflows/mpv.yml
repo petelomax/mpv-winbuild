@@ -170,6 +170,9 @@ jobs:
 
   build_mpv:
     name: Build MPV
+    env:
+      # Tell the build system to turn NVENC off
+      EXTRA_CMAKE_OPTS: "-DFFMPEG_ENABLE_NVENC=OFF"
     needs: params
     runs-on: ubuntu-latest
     container:
