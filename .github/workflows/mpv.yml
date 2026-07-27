@@ -21,6 +21,11 @@ on:
         - aarch64
         - all-64bit
         - all
+      enable_nvenc:                      # Add this
+        description: "Enable NVIDIA NVENC support"
+        required: false
+        default: true
+        type: boolean
       lgpl:
         description: "Also build lgpl libmpv"
         required: false
@@ -402,7 +407,7 @@ jobs:
           if [ "${{ matrix.lgpl }}" = "true" ]; then
             git am --3way ../compile-lgpl-libmpv.patch
           fi
-          bash ../build.sh -t '${{ matrix.bit }}' -c '${{ inputs.compiler }}' -s "${{ matrix.lgpl == true && 'true' || 'false' }}"
+          bash ../build.sh -t '${{ matrix.bit }}' -c '${{ inputs.compiler }}' -s "${{ matrix.lgpl == true && 'true' || 'false' }}" -e "${{ inputs.enable_nvenc != true && '-DENABLE_NVENC=OFF' || '' }}"
       - name: Collect logs
         if: ${{ always() }}
         run: |
